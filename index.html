@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON REVERSI - ハイテク・リバーシ Webアプリ</title>
+    <!-- Google Fonts: Outfit, Noto Sans JP -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="stars-bg"></div>
+    <div class="container">
+        <header>
+            <h1 class="glow-text">NEON <span class="accent-text">REVERSI</span></h1>
+            <p class="subtitle">人間 vs CPU 究極の知力戦</p>
+        </header>
+
+        <main class="game-layout">
+            <!-- 左側/上側: 設定とステータス -->
+            <div class="control-panel glass-panel">
+                <div class="panel-section">
+                    <h2><i class="fa-solid fa-sliders"></i> ゲーム設定</h2>
+                    
+                    <div class="control-group">
+                        <label for="cpu-level">CPUの強さ</label>
+                        <div class="select-wrapper">
+                            <select id="cpu-level">
+                                <option value="1">レベル 1 (超初級 - ランダム)</option>
+                                <option value="2">レベル 2 (初級 - 評価テーブル)</option>
+                                <option value="3">レベル 3 (中級 - 3手読み)</option>
+                                <option value="4">レベル 4 (上級 - 5手読み)</option>
+                                <option value="5" selected>レベル 5 (最強 - 7手読み/完全読)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>あなたの色</label>
+                        <div class="color-selector">
+                            <button type="button" class="color-btn active" id="select-black" data-color="black">
+                                <span class="color-preview black-preview"></span>
+                                先手 (黒)
+                            </button>
+                            <button type="button" class="color-btn" id="select-white" data-color="white">
+                                <span class="color-preview white-preview"></span>
+                                後手 (白)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button id="start-btn" class="primary-btn"><i class="fa-solid fa-play"></i> ゲーム開始</button>
+                        <button id="reset-btn" class="secondary-btn" disabled><i class="fa-solid fa-rotate-left"></i> リセット</button>
+                    </div>
+                </div>
+
+                <div class="panel-section status-section">
+                    <h2><i class="fa-solid fa-circle-info"></i> 対戦状況</h2>
+                    
+                    <div class="score-board">
+                        <div class="score-card player-card" id="black-card">
+                            <div class="card-label">黒 (先手)</div>
+                            <div class="card-stone-preview black-stone"></div>
+                            <div class="card-score" id="black-score">2</div>
+                            <div class="player-type" id="black-type">人間</div>
+                        </div>
+                        <div class="score-card player-card" id="white-card">
+                            <div class="card-label">白 (後手)</div>
+                            <div class="card-stone-preview white-stone"></div>
+                            <div class="card-score" id="white-score">2</div>
+                            <div class="player-type" id="white-type">CPU</div>
+                        </div>
+                    </div>
+
+                    <div class="turn-indicator" id="turn-indicator">
+                        ゲームを開始してください
+                    </div>
+
+                    <div class="cpu-loader" id="cpu-loader" style="display: none;">
+                        <div class="spinner"></div>
+                        <span>CPU思考中... <span id="cpu-thinking-depth"></span></span>
+                    </div>
+                </div>
+
+                <div class="panel-section utility-section">
+                    <button id="mute-btn" class="utility-btn" title="サウンド切り替え">
+                        <i class="fa-solid fa-volume-high"></i> 音声オン
+                    </button>
+                </div>
+            </div>
+
+            <!-- 右側/下側: リバーシ盤面 -->
+            <div class="board-wrapper">
+                <div class="board-outer glass-panel">
+                    <div id="board" class="board-grid">
+                        <!-- JSで動的にマス（セル）を生成 -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ゲーム終了ダイアログ -->
+    <div class="modal-overlay" id="result-modal" style="display: none;">
+        <div class="modal-content glass-panel">
+            <h2 id="result-title" class="glow-text">ゲーム終了</h2>
+            <div class="result-details">
+                <div class="result-score-flow">
+                    <span class="final-score" id="final-black-score">0</span>
+                    <span class="score-divider">:</span>
+                    <span class="final-score" id="final-white-score">0</span>
+                </div>
+                <p id="result-message" class="result-message">引き分け</p>
+            </div>
+            <button id="modal-close-btn" class="primary-btn"><i class="fa-solid fa-rotate-left"></i> もう一度遊ぶ</button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/sound.js"></script>
+    <script src="js/reversi.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
